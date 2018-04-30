@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class TankShooting : MonoBehaviour
 {
@@ -12,7 +11,8 @@ public class TankShooting : MonoBehaviour
     private string m_FireButton;         
     private float m_CurrentLaunchForce;  
     private float m_ChargeSpeed;         
-    private bool m_Fired;                
+    private bool m_Fired;
+    
 
     private void Start()
     {
@@ -26,6 +26,8 @@ public class TankShooting : MonoBehaviour
         {
             // ... launch the shell.
             Fire();
+            StartCoroutine(gameObject.GetComponent<TankMovement>().PauseTank());
+            m_Fired = false;
         }
     }
 

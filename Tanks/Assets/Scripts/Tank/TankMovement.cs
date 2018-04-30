@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public enum TankSpeed
 {
@@ -24,6 +25,8 @@ public class TankMovement : MonoBehaviour
     private float m_MovementInputValue;
     private float m_TurnInputValue;
     private float m_OriginalPitch;
+
+    private float secondsToWait = 1;
 
 
     private void Awake()
@@ -136,5 +139,10 @@ public class TankMovement : MonoBehaviour
                 break;
         }
         return multiplier;
+    }
+
+    public IEnumerator PauseTank()
+    {
+        yield return new WaitForSeconds(secondsToWait);
     }
 }

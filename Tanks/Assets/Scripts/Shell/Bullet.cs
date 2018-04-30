@@ -80,6 +80,7 @@ public class Bullet : MonoBehaviour
                 if (Physics.Raycast(ray, out hit))
                 {
                     Vector3 hitNorm = hit.normal;
+                    Debug.Log(hitNorm.ToString());
                     Vector3 incomingVector = transform.position - hit.transform.position;
                     reflectedVector = Vector3.Reflect(incomingVector, hitNorm);
                     transform.rotation = Quaternion.LookRotation(reflectedVector);
