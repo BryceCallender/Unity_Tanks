@@ -9,19 +9,10 @@ public class TankShooting : MonoBehaviour
     public AudioSource m_ShootingAudio;     
     public AudioClip m_FireClip;         
 
-
-
     private string m_FireButton;         
     private float m_CurrentLaunchForce;  
     private float m_ChargeSpeed;         
     private bool m_Fired;                
-
-
-    private void OnEnable()
-    {
-        
-    }
-
 
     private void Start()
     {

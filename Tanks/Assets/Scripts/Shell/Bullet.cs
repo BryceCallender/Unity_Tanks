@@ -65,7 +65,7 @@ public class Bullet : MonoBehaviour
     private void RayCast()
     {
         ray.direction = transform.forward;
-        Debug.DrawRay(Vector3.one*20, ray.direction, Color.blue);
+        Debug.DrawRay(transform.position,ray.direction,Color.blue,Mathf.Infinity);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -75,7 +75,7 @@ public class Bullet : MonoBehaviour
         if(collision.gameObject.tag == "Wall")
         {
             //If we can bounce off walls anymore
-            if(ricochetCount != 0)
+            if(ricochetCount > 0)
             {
                 if (Physics.Raycast(ray, out hit))
                 {
@@ -86,9 +86,15 @@ public class Bullet : MonoBehaviour
                     ricochetCount--;
                 } 
             }
+            else
+            {
+                //It cant ricochet anymore so destroy it
+                Destroy(gameObject);
+            }
         }
         else
         {
+            //Hit something other than wall, kill it and the object it hit
             Destroy(collision.gameObject);
             Destroy(gameObject);
         }

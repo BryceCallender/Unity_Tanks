@@ -29,4 +29,13 @@ public class Tank : MonoBehaviour
     {
 		
 	}
+
+    private void LayMine()
+    {
+        if(Input.GetKeyDown("Space"))
+        {
+            //LayMine
+            mineCount--;
+        }
+    }
 }
