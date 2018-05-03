@@ -11,12 +11,14 @@ public enum TankSpeed
 public class TankMovement : MonoBehaviour
 {
     public int m_PlayerNumber = 1;
-    public float m_Speed = 12f;
+    public float m_Speed = 6f;
     public float m_TurnSpeed = 180f;
     public AudioSource m_MovementAudio;
     public AudioClip m_EngineIdling;
     public AudioClip m_EngineDriving;
+    public Transform m_TurretTransform;
     public float m_PitchRange = 0.2f;
+
     public TankSpeed tankSpeed;
 
     private string m_MovementAxisName;
@@ -26,7 +28,7 @@ public class TankMovement : MonoBehaviour
     private float m_TurnInputValue;
     private float m_OriginalPitch;
 
-    private float secondsToWait = 1;
+    private float secondsToWait = 0.25f;
 
 
     private void Awake()
@@ -97,18 +99,38 @@ public class TankMovement : MonoBehaviour
     private void FixedUpdate()
     {
         // Move and turn the tank.
-        Move();
+        MoveBody();
+        MoveTurret();
         Turn();
     }
 
 
-    private void Move()
+    private void MoveBody()
     {
         // Adjust the position of the tank based on the player's input.
         Vector3 movement = transform.forward * m_MovementInputValue * m_Speed * Time.deltaTime;
         movement *= GetMultiplier(tankSpeed);
 
         m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
+    }
+
+    private void MoveTurret()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hitInfo;
+        Vector3 currentMousePosition = Vector3.zero;
+
+        if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity))
+        {
+            currentMousePosition = hitInfo.point;
+        }
+
+        Vector3 direction = currentMousePosition - m_TurretTransform.position;
+
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+
+        m_TurretTransform.rotation = Quaternion.Euler(0, lookRotation.eulerAngles.y, 0);
+
     }
 
 
@@ -143,6 +165,10 @@ public class TankMovement : MonoBehaviour
 
     public IEnumerator PauseTank()
     {
+        TankSpeed newTankSpeed = TankSpeed.IMMOBILE;
+        TankSpeed oldTankSpeed = tankSpeed;
+        tankSpeed = newTankSpeed;
         yield return new WaitForSeconds(secondsToWait);
+        tankSpeed = oldTankSpeed;
     }
 }

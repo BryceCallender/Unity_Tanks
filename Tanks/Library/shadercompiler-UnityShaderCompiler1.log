@@ -1,20 +1,145 @@
 Base path: /Applications/Unity/Unity.app/Contents
 Cmd: initializeCompiler
 Cmd: compileComputeKernel
-  api=14 insize=1386 outsize=6521 ok=1
-Cmd: compileComputeKernel
-  api=15 insize=1386 outsize=3529 ok=1
+  api=14 insize=2134 outsize=781 ok=1
 Cmd: translateComputeKernel
-  api=14 insize=6557 outsize=1317 ok=1
+  api=14 insize=2125 outsize=3945 ok=1
 Cmd: compileComputeKernel
-  api=14 insize=3182 outsize=7097 ok=1
-Cmd: compileComputeKernel
-  api=15 insize=3182 outsize=3741 ok=1
+  api=14 insize=7524 outsize=10513 ok=1
 Cmd: translateComputeKernel
-  api=14 insize=6689 outsize=1561 ok=1
+  api=14 insize=10513 outsize=18373 ok=1
 Cmd: compileComputeKernel
-  api=14 insize=1484 outsize=781 ok=1
+  api=14 insize=5188 outsize=6781 ok=1
 Cmd: translateComputeKernel
-  api=14 insize=873 outsize=909 ok=1
-
-Quitting shader compiler process
+  api=14 insize=5741 outsize=8325 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=9421 outsize=9341 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=9477 outsize=16253 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=1864 outsize=1997 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=1997 outsize=3609 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=1505 outsize=2073 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=15322 outsize=6065 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=15322 outsize=7457 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=15322 outsize=6665 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=15322 outsize=8057 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=15322 outsize=8225 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=15322 outsize=10193 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=15322 outsize=8957 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=15322 outsize=10617 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=15322 outsize=8985 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=15322 outsize=9197 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=15322 outsize=9241 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=15322 outsize=11209 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=15322 outsize=9445 ok=1
+Cmd: compileComputeKernel
+  api=14 insize=15322 outsize=10885 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=6141 outsize=10993 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=7221 outsize=13189 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=6393 outsize=11097 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=7785 outsize=13933 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=7805 outsize=13873 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=9773 outsize=17889 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=8049 outsize=14905 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=10017 outsize=18921 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=6897 outsize=12725 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=7977 outsize=14961 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=9061 outsize=16985 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=8157 outsize=14949 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=9549 outsize=17789 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=9733 outsize=18193 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=11701 outsize=22205 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=9977 outsize=19209 ok=1
+Cmd: translateComputeKernel
+  api=14 insize=11945 outsize=23225 ok=1
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler

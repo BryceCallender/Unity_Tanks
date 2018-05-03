@@ -14,18 +14,23 @@ public class Bullet : MonoBehaviour
     public int ricochetCount;
     public float speed;
     public BulletSpeed bulletSpeed;
+    public LayerMask layerMask;
 
 
     private RaycastHit hit;
     private Vector3 reflectedVector;
     private Ray ray;
     private Rigidbody rb;
+    private float rotation;
+
+    private TankShooting tankShoot;
 
 	// Use this for initialization
 	void Start () 
     {
-        ray = new Ray(transform.position, transform.forward);
         rb = gameObject.GetComponent<Rigidbody>();
+        tankShoot = gameObject.GetComponent<TankShooting>();
+        rotation = transform.rotation.eulerAngles.y;
 	}
 	
 	// Update is called once per frame
@@ -42,8 +47,10 @@ public class Bullet : MonoBehaviour
     private void Move()
     {
         //Adds the speed forwards and increases speed based on multiplier 
-        //from the speed enum
-        rb.AddForce(transform.forward * speed * GetMultiplier(bulletSpeed));
+        //from the speed enum relative to its local transform
+        transform.Translate(Time.deltaTime * Vector3.forward * speed * GetMultiplier(bulletSpeed),Space.Self);
+        //Keeps the rotation the same 
+        transform.eulerAngles = new Vector3(0, rotation, 0);
     }
 
     private float GetMultiplier(BulletSpeed bulletSpd)
@@ -64,8 +71,12 @@ public class Bullet : MonoBehaviour
 
     private void RayCast()
     {
-        ray.direction = transform.forward;
-        Debug.DrawRay(transform.position,ray.direction,Color.blue,Mathf.Infinity);
+        ray = new Ray(transform.position, transform.forward);
+        //Raycast forward to keep track of how we are doing
+        if (Physics.Raycast(ray, out hit,speed,layerMask))
+        {
+            reflectedVector = Vector3.Reflect(transform.forward,hit.normal);
+        } 
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -77,27 +88,25 @@ public class Bullet : MonoBehaviour
             //If we can bounce off walls anymore
             if(ricochetCount > 0)
             {
-                if (Physics.Raycast(ray, out hit))
-                {
-                    Vector3 hitNorm = hit.normal;
-                    Debug.Log(hitNorm.ToString());
-                    Vector3 incomingVector = transform.position - hit.transform.position;
-                    reflectedVector = Vector3.Reflect(incomingVector, hitNorm);
-                    transform.rotation = Quaternion.LookRotation(reflectedVector);
-                    ricochetCount--;
-                } 
+                rotation = 90 - Mathf.Atan2(reflectedVector.z, reflectedVector.x) * Mathf.Rad2Deg;
+                transform.eulerAngles = new Vector3(0, rotation, 0);
+                ricochetCount--;
             }
             else
             {
                 //It cant ricochet anymore so destroy it
+                //tankShoot.bullets.Remove(gameObject);
                 Destroy(gameObject);
+
             }
         }
         else
         {
             //Hit something other than wall, kill it and the object it hit
+            //tankShoot.bullets.Remove(gameObject);
             Destroy(collision.gameObject);
             Destroy(gameObject);
+
         }
     }
 }
