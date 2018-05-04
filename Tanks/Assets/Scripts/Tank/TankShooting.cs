@@ -37,6 +37,8 @@ public class TankShooting : MonoBehaviour
             Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
 
         bullets.Add(shellInstance.gameObject);
+        //TODO::try to get rid of this getcomponent too taxing
+        shellInstance.GetComponent<Bullet>().owner = gameObject;
 
         // Change the clip to the firing clip and play it.
         m_ShootingAudio.clip = m_FireClip;

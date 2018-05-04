@@ -15,21 +15,21 @@ public class Bullet : MonoBehaviour
     public float speed;
     public BulletSpeed bulletSpeed;
     public LayerMask layerMask;
-
+    public GameObject owner;
 
     private RaycastHit hit;
     private Vector3 reflectedVector;
     private Ray ray;
     private Rigidbody rb;
     private float rotation;
-
     private TankShooting tankShoot;
 
-	// Use this for initialization
-	void Start () 
+    // Use this for initialization
+    void Start () 
     {
         rb = gameObject.GetComponent<Rigidbody>();
-        tankShoot = gameObject.GetComponent<TankShooting>();
+        //This assumes the bullet only comes from a tank
+        tankShoot = owner.GetComponent<TankShooting>();
         rotation = transform.rotation.eulerAngles.y;
 	}
 	
@@ -95,7 +95,7 @@ public class Bullet : MonoBehaviour
             else
             {
                 //It cant ricochet anymore so destroy it
-                //tankShoot.bullets.Remove(gameObject);
+                tankShoot.bullets.Remove(gameObject);
                 Destroy(gameObject);
 
             }
@@ -103,7 +103,7 @@ public class Bullet : MonoBehaviour
         else
         {
             //Hit something other than wall, kill it and the object it hit
-            //tankShoot.bullets.Remove(gameObject);
+            tankShoot.bullets.Remove(gameObject);
             Destroy(collision.gameObject);
             Destroy(gameObject);
 
