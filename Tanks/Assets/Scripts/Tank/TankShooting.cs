@@ -12,21 +12,26 @@ public class TankShooting : MonoBehaviour
         
 
     private TankMovement tankMovement;
+    private bool bulletHandling;
 
     private void Start()
     {
         tankMovement = gameObject.GetComponent<TankMovement>();
         bullets = new List<GameObject>(Tank.MAX_BULLETS);
+        bulletHandling = false;
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && bullets.Count < Tank.MAX_BULLETS)
+        if (Input.GetMouseButtonDown(0) && bullets.Count < Tank.MAX_BULLETS && !bulletHandling)
         {
             // ... launch the shell.
             Fire();
+            bulletHandling = true;
             StartCoroutine(tankMovement.PauseTank());
-        }
+            bulletHandling = false;
+            //Debug.Break();
+        } 
     }
 
 

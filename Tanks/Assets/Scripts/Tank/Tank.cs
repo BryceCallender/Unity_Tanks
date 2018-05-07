@@ -17,7 +17,6 @@ public class Tank : MonoBehaviour
     public Intelligence tankIntelligence;
     public int mineCount;
 
-    public ParticleSystem explosion;
 
     //Can only have 2 mins active at a time
     public List<GameObject> mines;
@@ -29,7 +28,6 @@ public class Tank : MonoBehaviour
 	void Start () 
     {
         mines = new List<GameObject>(MAX_MINES);
-		
 	}
 	
 	// Update is called once per frame
@@ -55,7 +53,6 @@ public class Tank : MonoBehaviour
 
     private void OnDestroy()
     {
-        //Fix explosion
-        explosion.Play();
+        ParticleManager.Instance.playExplosion(gameObject.transform);
     }
 }

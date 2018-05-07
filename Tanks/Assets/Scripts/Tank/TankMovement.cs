@@ -20,6 +20,7 @@ public class TankMovement : MonoBehaviour
     public float m_PitchRange = 0.2f;
 
     public TankSpeed tankSpeed;
+    private TankSpeed permTankSpeed;
 
     private string m_MovementAxisName;
     private string m_TurnAxisName;
@@ -30,12 +31,11 @@ public class TankMovement : MonoBehaviour
 
     private float secondsToWait = 0.25f;
 
-
     private void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
+        permTankSpeed = tankSpeed;
     }
-
 
     private void OnEnable()
     {
@@ -44,12 +44,10 @@ public class TankMovement : MonoBehaviour
         m_TurnInputValue = 0f;
     }
 
-
     private void OnDisable()
     {
         m_Rigidbody.isKinematic = true;
     }
-
 
     private void Start()
     {
@@ -59,7 +57,6 @@ public class TankMovement : MonoBehaviour
         m_OriginalPitch = m_MovementAudio.pitch;
     }
 
-
     private void Update()
     {
         // Store the player's input and make sure the audio for the engine is playing.
@@ -68,7 +65,6 @@ public class TankMovement : MonoBehaviour
 
         EngineAudio();
     }
-
 
     private void EngineAudio()
     {
@@ -104,7 +100,6 @@ public class TankMovement : MonoBehaviour
         Turn();
     }
 
-
     private void MoveBody()
     {
         // Adjust the position of the tank based on the player's input.
@@ -132,7 +127,6 @@ public class TankMovement : MonoBehaviour
         m_TurretTransform.rotation = Quaternion.Euler(0, lookRotation.eulerAngles.y, 0);
 
     }
-
 
     private void Turn()
     {
@@ -166,9 +160,10 @@ public class TankMovement : MonoBehaviour
     public IEnumerator PauseTank()
     {
         TankSpeed newTankSpeed = TankSpeed.IMMOBILE;
-        TankSpeed oldTankSpeed = tankSpeed;
+        //Sets it immobile for the seconds to wait
         tankSpeed = newTankSpeed;
         yield return new WaitForSeconds(secondsToWait);
-        tankSpeed = oldTankSpeed;
+        //sets it back to its old permanent speed
+        tankSpeed = permTankSpeed;
     }
 }

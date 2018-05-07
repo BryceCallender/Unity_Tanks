@@ -8,6 +8,8 @@ public enum BulletSpeed
     HIGH
 };
 
+//TODO: fix smoke thing kinda looks weird the wii tanks one looks well done
+
 public class Bullet : MonoBehaviour 
 {
     public int bulletCount;
@@ -20,14 +22,12 @@ public class Bullet : MonoBehaviour
     private RaycastHit hit;
     private Vector3 reflectedVector;
     private Ray ray;
-    private Rigidbody rb;
     private float rotation;
     private TankShooting tankShoot;
 
     // Use this for initialization
     void Start () 
     {
-        rb = gameObject.GetComponent<Rigidbody>();
         //This assumes the bullet only comes from a tank
         tankShoot = owner.GetComponent<TankShooting>();
         rotation = transform.rotation.eulerAngles.y;
