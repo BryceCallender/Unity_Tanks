@@ -8,6 +8,7 @@ public enum TankSpeed
     HIGH
 };
 
+[RequireComponent(typeof(Tank))]
 public class TankMovement : MonoBehaviour
 {
     public int m_PlayerNumber = 1;
@@ -19,7 +20,6 @@ public class TankMovement : MonoBehaviour
     public Transform m_TurretTransform;
     public float m_PitchRange = 0.2f;
 
-    public TankSpeed tankSpeed;
     private TankSpeed permTankSpeed;
 
     private string m_MovementAxisName;
@@ -29,12 +29,15 @@ public class TankMovement : MonoBehaviour
     private float m_TurnInputValue;
     private float m_OriginalPitch;
 
+    private Tank tank;
+
     private float secondsToWait = 0.25f;
 
     private void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
-        permTankSpeed = tankSpeed;
+        tank = gameObject.GetComponent<Tank>();
+        permTankSpeed = tank.tankSpeed;
     }
 
     private void OnEnable()
@@ -104,7 +107,7 @@ public class TankMovement : MonoBehaviour
     {
         // Adjust the position of the tank based on the player's input.
         Vector3 movement = transform.forward * m_MovementInputValue * m_Speed * Time.deltaTime;
-        movement *= GetMultiplier(tankSpeed);
+        movement *= GetMultiplier(tank.tankSpeed);
 
         m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
     }
@@ -132,7 +135,7 @@ public class TankMovement : MonoBehaviour
     {
         // Adjust the rotation of the tank based on the player's input.
         float turn = m_TurnInputValue * m_TurnSpeed * Time.deltaTime;
-        turn *= GetMultiplier(tankSpeed);
+        turn *= GetMultiplier(tank.tankSpeed);
 
         Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
 
@@ -161,9 +164,9 @@ public class TankMovement : MonoBehaviour
     {
         TankSpeed newTankSpeed = TankSpeed.IMMOBILE;
         //Sets it immobile for the seconds to wait
-        tankSpeed = newTankSpeed;
+        tank.tankSpeed = newTankSpeed;
         yield return new WaitForSeconds(secondsToWait);
         //sets it back to its old permanent speed
-        tankSpeed = permTankSpeed;
+        tank.tankSpeed = permTankSpeed;
     }
 }

@@ -11,11 +11,9 @@ public enum BulletSpeed
 //TODO: fix smoke thing kinda looks weird the wii tanks one looks well done
 
 public class Bullet : MonoBehaviour 
-{
-    public int bulletCount;
-    public int ricochetCount;
+{ 
     public float speed;
-    public BulletSpeed bulletSpeed;
+    public int ricochetCount;
     public LayerMask layerMask;
     public GameObject owner;
 
@@ -23,6 +21,7 @@ public class Bullet : MonoBehaviour
     private Vector3 reflectedVector;
     private Ray ray;
     private float rotation;
+    private Tank tank;
     private TankShooting tankShoot;
 
     // Use this for initialization
@@ -31,6 +30,7 @@ public class Bullet : MonoBehaviour
         //This assumes the bullet only comes from a tank
         tankShoot = owner.GetComponent<TankShooting>();
         rotation = transform.rotation.eulerAngles.y;
+        tank = owner.GetComponent<Tank>();
 	}
 	
 	// Update is called once per frame
@@ -48,7 +48,7 @@ public class Bullet : MonoBehaviour
     {
         //Adds the speed forwards and increases speed based on multiplier 
         //from the speed enum relative to its local transform
-        transform.Translate(Time.deltaTime * Vector3.forward * speed * GetMultiplier(bulletSpeed),Space.Self);
+        transform.Translate(Time.deltaTime * Vector3.forward * speed * GetMultiplier(tank.bulletSpeed),Space.Self);
         //Keeps the rotation the same 
         transform.eulerAngles = new Vector3(0, rotation, 0);
     }
@@ -77,6 +77,12 @@ public class Bullet : MonoBehaviour
         {
             reflectedVector = Vector3.Reflect(transform.forward,hit.normal);
         } 
+    }
+
+
+    public void SetRicochetCount(int ricoCount)
+    {
+        ricochetCount = ricoCount;
     }
 
     private void OnCollisionEnter(Collision collision)

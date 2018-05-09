@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public enum Intelligence
 {
     PLAYER,
@@ -14,12 +12,20 @@ public enum Intelligence
 
 public class Tank : MonoBehaviour 
 {
-    public Intelligence tankIntelligence;
     public int mineCount;
+    public int bulletCount;
+    [Header("Tank Enums")]
+    public BulletSpeed bulletSpeed;
+    public Intelligence tankIntelligence;
+    public TankSpeed tankSpeed;
 
 
     //Can only have 2 mins active at a time
     public List<GameObject> mines;
+
+
+    [SerializeField]
+    private GameObject minePrefab;
 
     public static int MAX_BULLETS = 5;
     public static int MAX_MINES = 2;
@@ -43,11 +49,9 @@ public class Tank : MonoBehaviour
             //LayMine
             mineCount--;
             //Make mine
-
+            Instantiate(minePrefab, transform.position, Quaternion.identity);
 
             //Make sure only 2 active
-
-            //
         }
     }
 

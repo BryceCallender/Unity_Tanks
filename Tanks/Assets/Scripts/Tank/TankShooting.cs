@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Tank))]
 public class TankShooting : MonoBehaviour
 {       
     public Rigidbody m_Shell;            
