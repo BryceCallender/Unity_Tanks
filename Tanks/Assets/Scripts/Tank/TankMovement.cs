@@ -128,6 +128,8 @@ public class TankMovement : MonoBehaviour
         Quaternion lookRotation = Quaternion.LookRotation(direction);
 
         m_TurretTransform.rotation = Quaternion.Euler(0, lookRotation.eulerAngles.y, 0);
+        
+        Debug.DrawRay(m_TurretTransform.position,direction,Color.green);
 
     }
 
@@ -152,7 +154,7 @@ public class TankMovement : MonoBehaviour
                 break;
             case TankSpeed.NORMAL:multiplier = 0.5f;
                 break;
-            case TankSpeed.HIGH: multiplier = 1f;
+            case TankSpeed.HIGH: multiplier = 0.75f;
                 break;
             default: multiplier = 0;
                 break;

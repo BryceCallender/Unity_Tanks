@@ -44,7 +44,6 @@ public class Mine : MonoBehaviour
         material = GetComponent<Renderer>().material;
         normalColor = material.color;
         redBlinkingColor = Color.red;
-        owner = gameObject;
         tankLayerMask = 1 << 11;
     }
 	
@@ -82,7 +81,7 @@ public class Mine : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Bullet")
+        if(collision.gameObject.CompareTag("Bullet"))
         {
             //Blow up immediately
             Detonate();
@@ -117,15 +116,15 @@ public class Mine : MonoBehaviour
 
     private void Detonate()
     {
-        Collider[] hitInfoArray;
         //do explosion animation and kill anything in radius rooNya
-        hitInfoArray = Physics.OverlapSphere(transform.position, radiusOfExplosion, tankLayerMask);
+        Collider[] hitInfoArray = Physics.OverlapSphere(transform.position, radiusOfExplosion, tankLayerMask);
 
         foreach (var item in hitInfoArray)
         {
             Destroy(item.gameObject);
         }
 
+        owner.GetComponent<Tank>().mines.Remove(gameObject);
         Destroy(gameObject);
 
         isActivated = false;

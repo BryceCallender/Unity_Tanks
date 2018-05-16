@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters;
 using UnityEngine;
 
 public enum BulletSpeed
@@ -7,8 +8,6 @@ public enum BulletSpeed
     NORMAL,
     HIGH
 };
-
-//TODO: fix smoke thing kinda looks weird the wii tanks one looks well done
 
 public class Bullet : MonoBehaviour 
 { 
@@ -21,16 +20,31 @@ public class Bullet : MonoBehaviour
     private Vector3 reflectedVector;
     private Ray ray;
     private float rotation;
+    
     private Tank tank;
     private TankShooting tankShoot;
+
+    private EnemyStats stats;
+    private AITankShooting aiTankShoot;
+    
+    private float multiplier;
 
     // Use this for initialization
     void Start () 
     {
         //This assumes the bullet only comes from a tank
-        tankShoot = owner.GetComponent<TankShooting>();
         rotation = transform.rotation.eulerAngles.y;
-        tank = owner.GetComponent<Tank>();
+        if (owner.gameObject.name.Contains("AI"))
+        {
+            stats = owner.GetComponent<EnemyStats>();
+            aiTankShoot = owner.GetComponent<AITankShooting>();
+        }
+        else
+        {
+            tank = owner.GetComponent<Tank>();
+            tankShoot = owner.GetComponent<TankShooting>();
+        }
+        
 	}
 	
 	// Update is called once per frame
@@ -47,8 +61,17 @@ public class Bullet : MonoBehaviour
     private void Move()
     {
         //Adds the speed forwards and increases speed based on multiplier 
-        //from the speed enum relative to its local transform
-        transform.Translate(Time.deltaTime * Vector3.forward * speed * GetMultiplier(tank.bulletSpeed),Space.Self);
+        //from the speed enum relative to its local transform  
+        if (tank != null)
+        {
+            multiplier = GetMultiplier(tank.bulletSpeed);
+        }
+        else
+        {
+            multiplier = GetMultiplier(stats.bulletSpeed);
+        }
+        
+        transform.Translate(Time.deltaTime * Vector3.forward * speed * multiplier ,Space.Self);
         //Keeps the rotation the same 
         transform.eulerAngles = new Vector3(0, rotation, 0);
     }
@@ -89,7 +112,7 @@ public class Bullet : MonoBehaviour
     {
         //If we hit a wall lets reflect the bullet along the normal of the 
         //wall based on how it hits
-        if(collision.gameObject.tag == "Wall")
+        if(collision.gameObject.CompareTag("Wall"))
         {
             //If we can bounce off walls anymore
             if(ricochetCount > 0)
@@ -101,18 +124,43 @@ public class Bullet : MonoBehaviour
             else
             {
                 //It cant ricochet anymore so destroy it
-                tankShoot.bullets.Remove(gameObject);
-                Destroy(gameObject);
+                if (tankShoot != null)
+                {
+                    tankShoot.bullets.Remove(gameObject);
+                }
+                else
+                {
+                    aiTankShoot.bullets.Remove(gameObject);
+                }
+                Explode();
 
             }
         }
         else
         {
             //Hit something other than wall, kill it and the object it hit
-            tankShoot.bullets.Remove(gameObject);
+            if (tankShoot != null)
+            {
+                tankShoot.bullets.Remove(gameObject);
+            }
+            else
+            {
+                aiTankShoot.bullets.Remove(gameObject);
+            }
             Destroy(collision.gameObject);
-            Destroy(gameObject);
+            Explode();
 
         }
     }
+
+    private void Explode()
+    {
+        var hbPs = GetComponent<HyperbitProjectileScript>();
+        
+        hbPs.Explode();
+        
+        Destroy(gameObject);
+    }
+    
+    
 }

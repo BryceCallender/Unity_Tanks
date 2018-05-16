@@ -16,7 +16,6 @@ public class Tank : MonoBehaviour
     public int bulletCount;
     [Header("Tank Enums")]
     public BulletSpeed bulletSpeed;
-    public Intelligence tankIntelligence;
     public TankSpeed tankSpeed;
 
 
@@ -44,14 +43,11 @@ public class Tank : MonoBehaviour
 
     private void LayMine()
     {
-        if(Input.GetKeyDown("space"))
+        if(Input.GetKeyDown("space") && mines.Count < mineCount)
         {
-            //LayMine
-            mineCount--;
-            //Make mine
-            Instantiate(minePrefab, transform.position, Quaternion.identity);
-
-            //Make sure only 2 active
+            GameObject mine = Instantiate(minePrefab, transform.position, Quaternion.identity);
+            mine.GetComponent<Mine>().owner = this.gameObject;
+            mines.Add(mine);
         }
     }
 
