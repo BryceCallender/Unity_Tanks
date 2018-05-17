@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="$PROJECT_DIR$" t="IncludeRecursive">
+    <e p="C:\Users\bryce\.Rider2018.1\system\resharper-host\local\Transient\ReSharperHost\v12\SolutionCaches\_Tanks.-426577687.00" t="ExcludeRecursive" />
+    <e p="C:\Users\bryce\Desktop\Unity_Tanks\Tanks" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
@@ -50,6 +51,9 @@
           <e p="Bowlby_One" t="Include">
             <e p="OFL.txt" t="Include" />
           </e>
+          <e p="Jupiter" t="Include">
+            <e p="LICENSE.txt" t="Include" />
+          </e>
         </e>
         <e p="Hyperbit Arsenal" t="Include">
           <e p="Demo" t="Include">
@@ -72,6 +76,9 @@
           <e p="Shader" t="Include">
             <e p="BumpDistort.shader" t="Include" />
           </e>
+        </e>
+        <e p="Materials" t="Include">
+          <e p="UI-Default-No-Alpha.shader" t="Include" />
         </e>
         <e p="PostProcessing" t="Include">
           <e p="Editor" t="Include">
@@ -517,6 +524,7 @@
           </e>
         </e>
         <e p="Scripts" t="Include">
+          <e p="ActiveStateToggler.cs" t="Include" />
           <e p="AI" t="Include">
             <e p="AITankAiming.cs" t="Include" />
             <e p="AITankMovement.cs" t="Include" />
@@ -525,9 +533,14 @@
             <e p="EnemyStats.cs" t="Include" />
             <e p="IMoveable.cs" t="Include" />
           </e>
+          <e p="ApplicationManager.cs" t="Include" />
           <e p="Camera" t="Include">
             <e p="CameraControl.cs" t="Include" />
           </e>
+          <e p="ChangeColor.cs" t="Include" />
+          <e p="DragMe.cs" t="Include" />
+          <e p="DragPanel.cs" t="Include" />
+          <e p="DropMe.cs" t="Include" />
           <e p="Managers" t="Include">
             <e p="GameManager.cs" t="Include" />
             <e p="ParticleManager.cs" t="Include" />
@@ -536,18 +549,30 @@
           <e p="Mine" t="Include">
             <e p="Mine.cs" t="Include" />
           </e>
+          <e p="PanelManager.cs" t="Include" />
+          <e p="ResizePanel.cs" t="Include" />
+          <e p="ScrollDetailTexture.cs" t="Include" />
           <e p="Shell" t="Include">
             <e p="Bullet.cs" t="Include" />
             <e p="ShellExplosion.cs" t="Include" />
           </e>
+          <e p="ShowSliderValue.cs" t="Include" />
           <e p="Tank" t="Include">
             <e p="Tank.cs" t="Include" />
             <e p="TankMovement.cs" t="Include" />
             <e p="TankShooting.cs" t="Include" />
           </e>
+          <e p="TiltWindow.cs" t="Include" />
           <e p="UI" t="Include">
             <e p="Crosshair.cs" t="Include" />
             <e p="UIDirectionControl.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Textures and Sprites" t="Include">
+          <e p="SF UI" t="Include">
+            <e p="Background" t="Include">
+              <e p="LICENSE.txt" t="Include" />
+            </e>
           </e>
         </e>
       </e>
@@ -559,6 +584,5 @@
         <e p="bin" t="ExcludeRecursive" />
       </e>
     </e>
-    <e p="$USER_HOME$/Library/Caches/Rider2018.1/resharper-host/local/Transient/ReSharperHost/v12/SolutionCaches/_Tanks.-461364774.00" t="ExcludeRecursive" />
   </component>
 </project>

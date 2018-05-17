@@ -20,4 +20,6 @@ public class EnemyStats: MonoBehaviour
     public TankSpeed tankSpeed;
     public Intelligence tankIntelligence;
     public Strategy strategy;
+
+    public bool isKilled;
 }

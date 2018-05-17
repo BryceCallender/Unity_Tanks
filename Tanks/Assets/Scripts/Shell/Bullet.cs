@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters;
 using UnityEngine;
@@ -118,20 +119,24 @@ public class Bullet : MonoBehaviour
             if(ricochetCount > 0)
             {
                 rotation = 90 - Mathf.Atan2(reflectedVector.z, reflectedVector.x) * Mathf.Rad2Deg;
-                transform.eulerAngles = new Vector3(0, rotation, 0);
-                ricochetCount--;
+                //Weird corner stuff so im just gonna make it explode
+                if (Math.Abs(rotation - 90) < 0.1)
+                {
+                    RemoveBullet();
+                    Explode();
+                   
+                }
+                else
+                {
+                    transform.eulerAngles = new Vector3(0, rotation, 0);
+                    ricochetCount--;
+                }
+               
             }
             else
             {
                 //It cant ricochet anymore so destroy it
-                if (tankShoot != null)
-                {
-                    tankShoot.bullets.Remove(gameObject);
-                }
-                else
-                {
-                    aiTankShoot.bullets.Remove(gameObject);
-                }
+                RemoveBullet();
                 Explode();
 
             }
@@ -139,14 +144,7 @@ public class Bullet : MonoBehaviour
         else
         {
             //Hit something other than wall, kill it and the object it hit
-            if (tankShoot != null)
-            {
-                tankShoot.bullets.Remove(gameObject);
-            }
-            else
-            {
-                aiTankShoot.bullets.Remove(gameObject);
-            }
+            RemoveBullet();
             Destroy(collision.gameObject);
             Explode();
 
@@ -161,6 +159,22 @@ public class Bullet : MonoBehaviour
         
         Destroy(gameObject);
     }
-    
+
+    private void RemoveBullet()
+    {
+        if (tankShoot != null)
+        {
+            tankShoot.bullets.Remove(gameObject);
+        }
+        else
+        {
+            aiTankShoot.bullets.Remove(gameObject);
+        }
+    }
+
+    public void SetKillStatusForTank()
+    {
+        
+    }
     
 }
