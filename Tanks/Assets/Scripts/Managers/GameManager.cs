@@ -17,10 +17,8 @@ public class GameManager : MonoBehaviour
     private int missionNumber;              
     private WaitForSeconds m_StartWait;     
     private WaitForSeconds m_EndWait;
-/*    private TankManager m_RoundWinner;
-    private TankManager m_GameWinner;       
-*/
-    public static int gameIndex;
+
+    public static int gameIndex = 0;
 
     private void Start()
     {
@@ -29,8 +27,6 @@ public class GameManager : MonoBehaviour
         missionNumber = 0;
 
         SpawnAllTanks();
-        
-        print(GetAmountOfTanks());
 
         StartCoroutine(GameLoop());
     }
@@ -53,7 +49,7 @@ public class GameManager : MonoBehaviour
     {
         //After the player has been spawned in the ai are at indexs 1 to the length of the spawn counter
         for (int i = 1; i < m_Tanks.Length; i++)
-        {
+        { 
             m_Tanks[i].m_Instance = Instantiate(aiTankPrefab, m_Tanks[i].m_SpawnPoint.position,
                                                 m_Tanks[i].m_SpawnPoint.rotation);
         }
@@ -61,66 +57,81 @@ public class GameManager : MonoBehaviour
     
     private IEnumerator GameLoop()
     {
-        yield return StartCoroutine(RoundStarting());
-        yield return StartCoroutine(RoundPlaying());
-        yield return StartCoroutine(RoundEnding());
+        // Start off by running the 'RoundStarting' coroutine but don't return until it's finished.
+        yield return StartCoroutine (RoundStarting());
 
-//        if (PlayerDied())
-//        {
-//            SceneManager.LoadScene(0);
-//        }
-//        else
-//        {
-//            StartCoroutine(GameLoop());
-//        }
+        // Once the 'RoundStarting' coroutine is finished, run the 'RoundPlaying' coroutine but don't return until it's finished.
+        yield return StartCoroutine (RoundPlaying());
+
+        // Once execution has returned here, run the 'RoundEnding' coroutine, again don't return until it's finished.
+        yield return StartCoroutine (RoundEnding()); 
+
+        if (PlayerDied())
+        {
+            numberOfLives--;
+            if (numberOfLives > 0)
+            {
+                SpawnPlayer();
+                SpawnAI();
+                SceneManager.LoadScene(0);
+            }
+            else
+            {
+                EndGame();
+            } 
+        }
+        else
+        {
+            StartCoroutine(GameLoop());
+        }
     }
 
 
-     private IEnumerator RoundStarting ()
+    private IEnumerator RoundStarting()
+    {
+        // As soon as the round starts reset the tanks and make sure they can't move.
+        ResetAllTanks();
+        DisableTankControl();
+
+        // Increment the round number and display text showing the players what round it is.
+        missionNumber++;
+        m_MessageText.text = "Mission " + missionNumber;
+
+        // Wait for the specified length of time until yielding control back to the game loop.
+        yield return m_StartWait;
+    }
+
+
+    private IEnumerator RoundPlaying()
+    {
+        // As soon as the round begins playing let the players control the tanks.
+        EnableTankControl();
+
+        // Clear the text from the screen.
+        m_MessageText.text = string.Empty;
+
+        // While there is not one tank left...
+        while (!PlayerDied())
         {
-            // As soon as the round starts reset the tanks and make sure they can't move.
-            ResetAllTanks ();
-            DisableTankControl ();
-
-            // Increment the round number and display text showing the players what round it is.
-            missionNumber++;
-            m_MessageText.text = "Mission " + missionNumber;
-
-            // Wait for the specified length of time until yielding control back to the game loop.
-            yield return m_StartWait;
+            // ... return on the next frame.
+            yield return null;
         }
+    }
 
 
-        private IEnumerator RoundPlaying ()
-        {
-            // As soon as the round begins playing let the players control the tanks.
-            EnableTankControl ();
+    private IEnumerator RoundEnding()
+    {
+        // Stop tanks from moving.
+        DisableTankControl();
+        
+        // Get a message based on the scores and whether or not there is a game winner and display it.
+        string message = EndMessage();
+        //Set the message to that
+        m_MessageText.text = message;
 
-            // Clear the text from the screen.
-            m_MessageText.text = string.Empty;
-
-            // While there is not one tank left...
-            while (!PlayerDied())
-            {
-                // ... return on the next frame.
-                yield return null;
-            }
-        }
-
-
-        private IEnumerator RoundEnding ()
-        {
-            // Stop tanks from moving.
-            DisableTankControl ();
-            
-            // Get a message based on the scores and whether or not there is a game winner and display it.
-            string message = EndMessage ();
-            //Set the message to that
-            m_MessageText.text = message;
-
-            // Wait for the specified length of time until yielding control back to the game loop.
-            yield return m_EndWait;
-        }
+        // Wait for the specified length of time until yielding control back to the game loop.
+        yield return m_EndWait;
+    }
 
     
     
@@ -139,7 +150,7 @@ public class GameManager : MonoBehaviour
     private bool PlayerDied()
     {
         //If the object, aka the player, is active then they are alive and well
-        return m_Tanks[0].m_Instance.activeSelf;
+        return !m_Tanks[0].m_Instance.activeSelf;
     }
 
 
@@ -175,5 +186,10 @@ public class GameManager : MonoBehaviour
         //Return the count of the spawners minus one since one of them 
         //is occupied by the player themselves
         return m_Tanks.Length - 1;
+    }
+
+    private void EndGame()
+    {
+        //End the game my dude
     }
 }
