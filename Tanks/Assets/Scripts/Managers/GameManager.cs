@@ -18,8 +18,10 @@ public class GameManager : MonoBehaviour
     private WaitForSeconds m_StartWait;     
     private WaitForSeconds m_EndWait;
 
-    public static int gameIndex = 0;
 
+    public static int gameIndex = 0;
+    public static bool wonGame;
+    
     private void Start()
     {
         m_StartWait = new WaitForSeconds(m_StartDelay);
@@ -73,6 +75,7 @@ public class GameManager : MonoBehaviour
             {
                 SpawnPlayer();
                 SpawnAI();
+                //Load the temporary waiting screen...
                 SceneManager.LoadScene(0);
             }
             else

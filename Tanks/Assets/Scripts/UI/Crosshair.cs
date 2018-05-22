@@ -12,12 +12,13 @@ public class Crosshair : MonoBehaviour
 
 	private RaycastHit hit;
 
+	
 	private int index = 0;
-
 	private bool cursorChanged;
-	//Make a good amount of textures where the color is changing downwards
-	//so we can get the effect of the color moving
 
+
+	private TrailRenderer trail;
+	
 	// Use this for initialization
 	private void Awake()
 	{
@@ -25,15 +26,14 @@ public class Crosshair : MonoBehaviour
 		Cursor.SetCursor(crosshairs[index],hotSpot,CursorMode.Auto);
 	}
 
-//	private void Update()
-//	{
-//		if (!cursorChanged)
-//		{
-//			StartCoroutine(ChangeCursor());
-//			cursorChanged = false;
-//		}
-//		
-//	}
+	private void Update()
+	{
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+		{
+			transform.position = hit.point;
+		}
+	}
 
 //	private IEnumerator ChangeCursor()
 //	{
@@ -42,5 +42,7 @@ public class Crosshair : MonoBehaviour
 //		yield return new WaitForSeconds(4);
 //		cursorChanged = true;
 //	}
+	
+	
 	
 }

@@ -531,7 +531,6 @@
             <e p="AITankRayCasting.cs" t="Include" />
             <e p="AITankShooting.cs" t="Include" />
             <e p="EnemyStats.cs" t="Include" />
-            <e p="IMoveable.cs" t="Include" />
           </e>
           <e p="ApplicationManager.cs" t="Include" />
           <e p="Camera" t="Include">
@@ -543,8 +542,10 @@
           <e p="DropMe.cs" t="Include" />
           <e p="Managers" t="Include">
             <e p="GameManager.cs" t="Include" />
+            <e p="LoadingScreenManager.cs" t="Include" />
             <e p="ParticleManager.cs" t="Include" />
             <e p="TankManager.cs" t="Include" />
+            <e p="WaypointManager.cs" t="Include" />
           </e>
           <e p="Mine" t="Include">
             <e p="Mine.cs" t="Include" />
@@ -566,6 +567,9 @@
           <e p="UI" t="Include">
             <e p="Crosshair.cs" t="Include" />
             <e p="UIDirectionControl.cs" t="Include" />
+          </e>
+          <e p="Waypoints" t="Include">
+            <e p="Waypoint.cs" t="Include" />
           </e>
         </e>
         <e p="TextMesh Pro" t="Include">

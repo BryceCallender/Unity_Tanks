@@ -22,4 +22,12 @@ public class EnemyStats: MonoBehaviour
     public Strategy strategy;
 
     public bool isKilled;
+    public float rangeForWaypointGrabbing;
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position,rangeForWaypointGrabbing);
+    }
 }

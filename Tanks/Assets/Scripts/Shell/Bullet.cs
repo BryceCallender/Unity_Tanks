@@ -141,7 +141,7 @@ public class Bullet : MonoBehaviour
 
             }
         }
-        else
+        else if(collision.gameObject.layer != 12)
         {
             //Hit something other than wall, kill it and the object it hit
             RemoveBullet();
