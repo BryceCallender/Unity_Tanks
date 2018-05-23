@@ -52,7 +52,8 @@ public class Bullet : MonoBehaviour
 	void Update () 
     {
         RayCast();
-	}
+        CheckForDeadOwner();
+    }
 
     private void FixedUpdate()
     {
@@ -103,12 +104,6 @@ public class Bullet : MonoBehaviour
         } 
     }
 
-
-    public void SetRicochetCount(int ricoCount)
-    {
-        ricochetCount = ricoCount;
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         //If we hit a wall lets reflect the bullet along the normal of the 
@@ -141,21 +136,24 @@ public class Bullet : MonoBehaviour
 
             }
         }
-        else if(collision.gameObject.layer != 12)
+        else 
         {
             //Hit something other than wall, kill it and the object it hit
             RemoveBullet();
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
             Explode();
 
         }
     }
 
+    //Destroys bullet and whatever it hit 
     private void Explode()
     {
         var hbPs = GetComponent<HyperbitProjectileScript>();
         
         hbPs.Explode();
+
+        SetKillStatusForAITank();
         
         Destroy(gameObject);
     }
@@ -172,9 +170,25 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    public void SetKillStatusForTank()
+    private void SetKillStatusForAITank()
     {
-        
+        //This is used to mark the tank dead for when we reload level so it 
+        //is not reloaded as in the wii tanks version
+        if (aiTankShoot != null)
+        {
+            aiTankShoot.gameObject.GetComponent<EnemyStats>().isKilled = true;
+        }
     }
+    
+    //If my owner is dead i should be dead as well so lets kill the bullets 
+    //immediately
+    private void CheckForDeadOwner()
+    {
+        if (owner == null)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     
 }

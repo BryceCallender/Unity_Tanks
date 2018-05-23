@@ -1,32 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TMPro;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
+//TODO:: if u die the screen never unloads
 public class GameManager : MonoBehaviour
 {
     public int numberOfLives = 5;        
     public float m_StartDelay = 3f;         
     public float m_EndDelay = 3f;             
-    public Text m_MessageText;              
+    public TextMeshProUGUI m_MessageText;              
     public GameObject playerTankPrefab;
-    public GameObject aiTankPrefab;
+    public GameObject[] aiTankPrefabs;
     public TankManager[] m_Tanks;           
 
 
-    private int missionNumber;              
+    public static int missionNumber = 1;              
     private WaitForSeconds m_StartWait;     
     private WaitForSeconds m_EndWait;
 
 
-    public static int gameIndex = 0;
-    public static bool wonGame;
+    private LoadingScreenManager loadingManager;
+    private bool wonGame;
+    private int gameIndex = 0;
     
     private void Start()
     {
         m_StartWait = new WaitForSeconds(m_StartDelay);
         m_EndWait = new WaitForSeconds(m_EndDelay);
-        missionNumber = 0;
+        loadingManager = gameObject.GetComponent<LoadingScreenManager>();
 
         SpawnAllTanks();
 
@@ -45,15 +47,24 @@ public class GameManager : MonoBehaviour
         //The player tank instance should be the first one in the array of transform positions
         m_Tanks[0].m_Instance = Instantiate(playerTankPrefab, m_Tanks[0].m_SpawnPoint.position, 
                                             m_Tanks[0].m_SpawnPoint.rotation);
+        m_Tanks[0].Setup();
     }
 
+    //Spawn Ai the i-1 is for the Ai specifically prefabs because it starts at 0 but the m_tanks
+    //starts at 1 
     private void SpawnAI()
     {
         //After the player has been spawned in the ai are at indexs 1 to the length of the spawn counter
         for (int i = 1; i < m_Tanks.Length; i++)
-        { 
-            m_Tanks[i].m_Instance = Instantiate(aiTankPrefab, m_Tanks[i].m_SpawnPoint.position,
-                                                m_Tanks[i].m_SpawnPoint.rotation);
+        {
+            if (!aiTankPrefabs[i-1].GetComponent<EnemyStats>().isKilled)
+            {
+                m_Tanks[i].m_Instance = Instantiate(aiTankPrefabs[i-1], m_Tanks[i].m_SpawnPoint.position,
+                    m_Tanks[i].m_SpawnPoint.rotation);
+                m_Tanks[i].IsAi = true;
+                m_Tanks[i].Setup();
+            }
+                
         }
     }
     
@@ -73,10 +84,9 @@ public class GameManager : MonoBehaviour
             numberOfLives--;
             if (numberOfLives > 0)
             {
-                SpawnPlayer();
-                SpawnAI();
+                ResetAllTanks();
                 //Load the temporary waiting screen...
-                SceneManager.LoadScene(0);
+                StartCoroutine(GameLoop());
             }
             else
             {
@@ -85,6 +95,11 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            if (wonGame)
+            {
+                gameIndex++;
+                SceneManager.LoadScene(gameIndex);
+            }
             StartCoroutine(GameLoop());
         }
     }
@@ -95,10 +110,7 @@ public class GameManager : MonoBehaviour
         // As soon as the round starts reset the tanks and make sure they can't move.
         ResetAllTanks();
         DisableTankControl();
-
-        // Increment the round number and display text showing the players what round it is.
-        missionNumber++;
-        m_MessageText.text = "Mission " + missionNumber;
+        EnableLoadingScreen();
 
         // Wait for the specified length of time until yielding control back to the game loop.
         yield return m_StartWait;
@@ -107,6 +119,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RoundPlaying()
     {
+        DisableLoadingScreen();
         // As soon as the round begins playing let the players control the tanks.
         EnableTankControl();
 
@@ -114,7 +127,7 @@ public class GameManager : MonoBehaviour
         m_MessageText.text = string.Empty;
 
         // While there is not one tank left...
-        while (!PlayerDied())
+        while (!OneTankLeft() && !PlayerDied())
         {
             // ... return on the next frame.
             yield return null;
@@ -123,15 +136,18 @@ public class GameManager : MonoBehaviour
 
 
     private IEnumerator RoundEnding()
-    {
+    {      
         // Stop tanks from moving.
         DisableTankControl();
-        
-        // Get a message based on the scores and whether or not there is a game winner and display it.
-        string message = EndMessage();
-        //Set the message to that
-        m_MessageText.text = message;
 
+        if (!PlayerDied())
+        {
+            wonGame = true;
+            // Get a message based on the scores and whether or not there is a game winner and display it.
+            string message = EndMessage();
+            //Set the message to that
+            m_MessageText.text = message;
+        }
         // Wait for the specified length of time until yielding control back to the game loop.
         yield return m_EndWait;
     }
@@ -144,8 +160,7 @@ public class GameManager : MonoBehaviour
         // By default when a round ends there are no winners so the default end message is a draw.
         string message = "Mission Cleared!";
 
-        // Add some line breaks after the initial message.
-        message += "\n\n\n\n";
+        missionNumber++;
         
         return message;
     }
@@ -154,6 +169,23 @@ public class GameManager : MonoBehaviour
     {
         //If the object, aka the player, is active then they are alive and well
         return !m_Tanks[0].m_Instance.activeSelf;
+    }
+    
+    // This is used to check if there is one or fewer tanks remaining and thus the round should end.
+    private bool OneTankLeft()
+    {
+        // Start the count of tanks left at zero.
+        int numTanksLeft = 0;
+
+        // Go through all the tanks...
+        for (int i = 0; i < m_Tanks.Length; i++)
+        {
+            // ... and if they are active, increment the counter.
+            if (m_Tanks[i].m_Instance.activeSelf)
+                numTanksLeft++;
+        }
+        // If there are one or fewer tanks remaining return true, otherwise return false.
+        return numTanksLeft <= 1;
     }
 
 
@@ -193,6 +225,20 @@ public class GameManager : MonoBehaviour
 
     private void EndGame()
     {
-        //End the game my dude
+        Application.Quit();
     }
+
+    private void EnableLoadingScreen()
+    {
+        print("Enabling the screen...");
+        loadingManager.EnableUi();
+    }
+
+    private void DisableLoadingScreen()
+    {
+        print("Disabling the screen...");
+        loadingManager.DisableUi();
+    }
+    
+    
 }

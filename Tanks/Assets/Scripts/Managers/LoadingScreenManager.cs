@@ -1,26 +1,49 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class LoadingScreenManager : MonoBehaviour
 {
+	public GameManager gameManager;
+	[SerializeField]
+	private GameObject m_CanvasGameObject;
 
-	private int loadingScreenIndex = 0;
+	[SerializeField]
+	private TextMeshProUGUI missionText;
+	[SerializeField]
+	private TextMeshProUGUI tankCount;
+	[SerializeField] 
+	private TextMeshProUGUI lifeCount;
 	
-	// Update is called once per frame
-	void Update () 
+	private int loadingScreenIndex = 0;
+
+	private void Awake()
 	{
+		gameManager = gameObject.GetComponent<GameManager>();
+	}
+	
+	private void LoadScreen()
+	{
+		SetText();
+	}
+
+	public void EnableUi()
+	{
+		m_CanvasGameObject.SetActive(true);
 		LoadScreen();
 	}
 
-	private void LoadScreen()
+	public void DisableUi()
 	{
-		if (GameManager.wonGame)
-		{
-			SceneManager.LoadScene(GameManager.gameIndex);
-		}
-		else
-		{
-			
-		} 
+		m_CanvasGameObject.SetActive(false);
 	}
+
+	private void SetText()
+	{
+		missionText.text = "Mission " + GameManager.missionNumber;
+		tankCount.text = "Enemy Tanks: " + gameManager.GetAmountOfTanks();
+		lifeCount.text = "Lives x" + gameManager.numberOfLives;
+	}
+
 }

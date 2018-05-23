@@ -7,22 +7,6 @@ using UnityEngine;
 public class WaypointManager : MonoBehaviour
 {
 	public Transform[] wayPoints;
-
-	#region singleton
-	private static WaypointManager instance;
-
-	public static WaypointManager Instance
-	{
-		get 
-		{
-			if (instance == null)
-			{
-				instance = new WaypointManager();
-			}
-			return instance;
-		}
-	}
-	#endregion
 	
 	// Use this for initialization
 	void Start () 

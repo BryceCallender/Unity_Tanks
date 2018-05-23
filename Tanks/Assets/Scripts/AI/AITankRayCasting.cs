@@ -15,6 +15,8 @@ public class AITankRayCasting : MonoBehaviour
 
 	private LayerMask tankLayerMask;
 	private Vector3 reflectedVector;
+
+	public bool aimingAtItself;
 	
 	// Use this for initialization
 	void Start ()
@@ -64,6 +66,7 @@ public class AITankRayCasting : MonoBehaviour
 				Debug.DrawLine(position,hitInfo.point,Color.yellow);
 				//Just add it to the array from end to front just because
 				hitArray[numberOfRicochetsLeft] = hitInfo.collider.gameObject;
+				aimingAtItself = AimingAtItself();
 				RicochetRayCastRecursion(hitInfo.point,reflectedVector,numberOfRicochetsLeft-1);
 			}
 		}
@@ -83,9 +86,11 @@ public class AITankRayCasting : MonoBehaviour
 
 	public bool AimingAtItself()
 	{
-		foreach (var item in hitArray)
+		for (int i = 0; i < hitArray.Length; i++)
 		{
-			if (item.gameObject.name == gameObject.name)
+			if (hitArray[i] == null)
+				continue;
+			if (hitArray[i].gameObject.name.Equals(gameObject.name))
 			{
 				return true;
 			}

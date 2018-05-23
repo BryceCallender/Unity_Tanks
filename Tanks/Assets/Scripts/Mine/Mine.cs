@@ -37,6 +37,8 @@ public class Mine : MonoBehaviour
     [SerializeField]
     private Collider[] colliders;
     private Coroutine mineTimer;
+    [SerializeField]
+    private ParticleSystem explosion;
 
     // Use this for initialization
     void Start ()
@@ -116,6 +118,7 @@ public class Mine : MonoBehaviour
 
     private void Detonate()
     {
+        explosion.gameObject.SetActive(true);
         //do explosion animation and kill anything in radius rooNya
         Collider[] hitInfoArray = Physics.OverlapSphere(transform.position, radiusOfExplosion, tankLayerMask);
 
@@ -126,6 +129,7 @@ public class Mine : MonoBehaviour
 
         owner.GetComponent<Tank>().mines.Remove(gameObject);
         Destroy(gameObject);
+        Destroy(explosion);
 
         isActivated = false;
         isBlinking = false;

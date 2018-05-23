@@ -37,7 +37,7 @@ public class AITankShooting : MonoBehaviour
 		if (bullets.Count < bulletCount)
 		{
 			DetermineFireForAi();
-			if (!aiRayCast.AimingAtItself() && (randomShootTimer -= Time.deltaTime) <= 0)
+			if (!aiRayCast.aimingAtItself && (randomShootTimer -= Time.deltaTime) <= 0)
 			{
 				Fire();
 			}

@@ -16,7 +16,12 @@ public class AITankMovement : MonoBehaviour
 	private void Start ()
 	{
 		agent = GetComponent<NavMeshAgent>();
-		waypointManager = WaypointManager.Instance;
+		
+		if (GameObject.Find("WayPoints"))
+		{
+			waypointManager = GameObject.Find("WayPoints").GetComponent<WaypointManager>();
+		}
+		
 		stats = gameObject.GetComponent<EnemyStats>();
 
 		agent.autoBraking = false;
@@ -31,7 +36,10 @@ public class AITankMovement : MonoBehaviour
 	// Update is called once per frame
 	private void Update ()
 	{
-		LowIntelMovement();
+		if (agent.speed > 0)
+		{
+			LowIntelMovement();
+		}
 	}
 
 	private void LowIntelMovement()
@@ -49,6 +57,7 @@ public class AITankMovement : MonoBehaviour
 	private GameObject RandomWaypointInRadius()
 	{
 		Collider[] hitWayPoints = waypointManager.GetWaypointsNear(gameObject.transform, stats.rangeForWaypointGrabbing);
+		print(hitWayPoints.Length);
 		int randomChoice = Random.Range(0, hitWayPoints.Length);
 		return hitWayPoints[randomChoice].gameObject;
 	}

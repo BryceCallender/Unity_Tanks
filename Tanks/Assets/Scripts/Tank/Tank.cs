@@ -50,9 +50,4 @@ public class Tank : MonoBehaviour
             mines.Add(mine);
         }
     }
-
-    private void OnDestroy()
-    {
-        ParticleManager.Instance.playExplosion(gameObject.transform);
-    }
 }
